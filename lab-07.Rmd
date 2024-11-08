@@ -24,16 +24,40 @@ evals<-read.csv("data/evals.csv", row.names=1)
 1.  Visualize the distribution of `score` in the dataframe `evals`.
 
 ```{r viz-score}
+
+ggplot(data.frame(evals), aes(x = score)) +
+  geom_histogram(binwidth = 0.1, fill = "skyblue", color = "black") +
+  labs(title = "Histogram of students' scores", x = "Scores", y = "Frequency")
+
 # add code here
 ```
 
-*Add your other details and narratives here.*
+Is the distribution skewed? What does that tell you about how students rate courses? Is this what you expected to see? Why, or why not?
+- The distribution is skewed to 4.5 scores
+
+
+Include any summary statistics and visualizations you use in your response.
+- 
+
 
 2.  Visualize and describe the relationship between `score` and `bty_avg` using `geom_point()` to represent the data. 
 
 ```{r scatterplot}
 # add code here
+
+ggplot(evals, aes(x = score, y = bty_avg)) +
+  geom_point() +
+  labs(title = "Relationship between score and bty_avg", x = "score", y = "bty_avg")
+
 ```
+
+```{r scatterplot}
+
+ggplot(evals, aes(x = score, y = bty_avg)) +
+  geom_jitter() +
+  labs(title = "Relationship between score and bty_avg", x = "score", y = "bty_avg")
+```
+
 
 *Add your narrative and other details here.*
 
@@ -45,20 +69,27 @@ evals<-read.csv("data/evals.csv", row.names=1)
 # remove eval = FALSE from the code chunk options after filling in the blanks
 score_bty_fit <- linear_reg() %>%
   set_engine("lm") %>%
-  fit(___ ~ ___, data = ___)
+  fit(score ~ bty_avg, data = evals)
 ```
 
 ```{r tidy-score_bty_fit, eval = FALSE}
 # remove eval = FALSE from the code chunk options after filling in the blanks
-tidy(___)
+tidy(score_bty_fit)
 ```
 
 *Add your linear model here. Don't worry too much about notation, you can use things like score-hat.*
+bty_avg = 3.88 +0.067 *(score)
+
 
 2. Plot the data again using `geom_jitter()`, and add the regression line.
 
 ```{r viz-score_bty_fit,eval=FALSE}
 # add your plot here. Hint, you can add the regression line using geom_smooth()
+ggplot(evals, aes(x = score, y = bty_avg)) +
+  geom_jitter() +
+  geom_smooth(method = "lm", se = FALSE, formula = "y ~ x")+ 
+  labs(title = "Relationship between score and bty_avg", x = "score", y = "bty_avg")
+
 ```
 
 3. Interpret the slope of the linear model in context of the data.
